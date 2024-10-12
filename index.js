@@ -1,63 +1,52 @@
+// Get the number of drum buttons
 var len = document.querySelectorAll(".drum").length;
 
-for(var i = 0; i < len; i++){
+// Iterate through all drum buttons
+for (var i = 0; i < len; i++) {
     document.querySelectorAll(".drum")[i].addEventListener("click", clickh);
-
-    
-
+    document.querySelectorAll(".drum")[i].addEventListener("touchstart", clickh); // Add touchstart for mobile
 }
-function clickh(){
+
+// Function to handle click or touch
+function clickh() {
     var innerKey = this.innerHTML;
     key(innerKey);
     ba(innerKey);
-
 }
 
-document.addEventListener("keypress", function(event){
+// Detect keypress events
+document.addEventListener("keypress", function (event) {
     key(event.key);
     ba(event.key);
-
 });
 
-function key(key){
-    switch(key){
-        case "w":
-            var audio = new Audio('sounds/tom1.mp3');
-            audio.play();
-        break;
-        case "a":
-            var audio = new Audio('sounds/tom2.mp3');
-            audio.play();
-        break;  
-        case "s":
-            var audio1 = new Audio('sounds/tom3.mp3');
-            audio1.play();
-        break;  
-        case "d":
-            var audio2 = new Audio('sounds/tom4.mp3');
-            audio2.play();
-        break;  
-        case "j":
-            var audio3 = new Audio('sounds/crash.mp3');
-            audio3.play();
-        break;  
-        case "k":
-            var audio4 = new Audio('sounds/kickbass.mp3');
-            audio4.play();
-        break;  
-        case "l":
-            var audio7 = new Audio('sounds/snare.mp3');
-            audio7.play();
-        break;
-    }
+// Preload audio files for better performance
+var audioFiles = {
+    "w": new Audio('sounds/tom1.mp3'),
+    "a": new Audio('sounds/tom2.mp3'),
+    "s": new Audio('sounds/tom3.mp3'),
+    "d": new Audio('sounds/tom4.mp3'),
+    "j": new Audio('sounds/crash.mp3'),
+    "k": new Audio('sounds/kickbass.mp3'),
+    "l": new Audio('sounds/snare.mp3')
+};
 
+// Function to play the sound based on the key
+function key(key) {
+    var audio = audioFiles[key];
+    if (audio) {
+        audio.currentTime = 0;  // Reset sound to avoid delay in repeated presses
+        audio.play();
+    }
 }
 
-function ba(cr){
+// Button animation function
+function ba(cr) {
     var ak = document.querySelector("." + cr);
-    ak.classList.add("pressed");
-    setTimeout(function(){
-        ak.classList.remove("pressed");
-    }, 100);
-
+    if (ak) {
+        ak.classList.add("pressed");
+        setTimeout(function () {
+            ak.classList.remove("pressed");
+        }, 100);
+    }
 }
